@@ -1,16 +1,18 @@
 import React from 'react';
 import {Button, SafeAreaView, StyleSheet, Text} from 'react-native';
+import {useAppSelector} from "../../bll/hooks";
+import moment from "moment";
 
 
-export const HomeScreen = ({navigation }: any) => {
+export const HomeScreen = ({navigation}: any) => {
+    const firstData = useAppSelector(state => state.app.data)
+    let duration = firstData.date && moment.duration(moment().diff(firstData.date));
 
-    return(
+    return (
         <SafeAreaView style={styles.container}>
-            <Text>Home</Text>
-            <Button
-                title="Go to Details"
-                onPress={() => navigation.navigate('Settings')}
-            />
+            <Text>{duration.years()}  {duration.months()}  {duration.days()}</Text>
+            <Text>{firstData.height}</Text>
+            <Text>{firstData.weight}</Text>
         </SafeAreaView>
     )
 }
