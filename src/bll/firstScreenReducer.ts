@@ -1,5 +1,7 @@
 import {setData} from '../api/api'
 import {AppActionsType, AppDispatchType, AppThunkType} from "./store";
+import {setItemTC} from "./appReducer";
+import uuid from "react-native-uuid";
 
 const initialState: InitialStateType = {
     firstData: null,
@@ -7,7 +9,7 @@ const initialState: InitialStateType = {
 
 export const firstScreenReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
-        case 'APP/SET-FIRST-DATA':
+        case 'FIRST/SET-FIRST-DATA':
             return {...state, firstData: action.firstData}
         default:
             return {...state}
@@ -15,12 +17,14 @@ export const firstScreenReducer = (state: InitialStateType = initialState, actio
 }
 
 // actions
-export const setFirstData = (firstData: any) => ({type: 'APP/SET-FIRST-DATA', firstData} as const)
+export const setFirstData = (firstData: any) => ({type: 'FIRST/SET-FIRST-DATA', firstData} as const)
 // thunks
 export const setFirstDataTC = (firstData: any): AppThunkType => (dispatch: AppDispatchType) => {
+    const {weight, height, photo} = firstData
     setData(firstData, 'firstData')
         .then(res => {
             dispatch(setFirstData(firstData))
+            dispatch(setItemTC({weight, height, photo, age: 0, id: uuid.v4()}))
         })
         .catch((e) => {
         })

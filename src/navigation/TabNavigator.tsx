@@ -1,4 +1,4 @@
-import {NavigationContainer} from "@react-navigation/native";
+import {NavigationContainer, useNavigation} from "@react-navigation/native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {InputsScreen} from "../scenes/inputs";
 import {ChartsScreen} from "../scenes/charts";
@@ -11,7 +11,6 @@ import {AntDesign} from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
-
     return (
         <NavigationContainer>
             <Tab.Navigator
@@ -39,14 +38,14 @@ export const TabNavigator = () => {
                     options={{ title: 'Главная' }}
                 />
                 <Tab.Screen
-                    name='Charts'
-                    component={ChartsScreen}
-                    options={{ title: 'Графики' }}
-                />
-                <Tab.Screen
                     name='Inputs'
                     component={InputsScreen}
                     options={{ title: 'Внести данные' }}
+                />
+                <Tab.Screen
+                    name='Charts'
+                    component={ChartsScreen}
+                    options={{ title: 'Графики' }}
                 />
                 <Tab.Screen
                     name='Gallery'

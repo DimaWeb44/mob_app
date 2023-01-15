@@ -1,37 +1,32 @@
-/*
 import {View} from "react-native";
 import {BarChart} from "react-native-chart-kit";
 import {width} from "../scenes/inputs";
 
-export const ChartBar = ({data}: any) => {
+export const ChartBar = ({heightArr, ageArr}: any) => {
     return (<View style={{width: width}}>
             <BarChart
                 data={{
-                    labels: ["Янв", "Фев", "Март", "Апр", "Май", "Июнь"],
+                    labels: ageArr,
                     datasets: [
                         {
-                            data: [
-                                Math.floor(Math.random() * 100) ,
-                                Math.floor(Math.random() * 100) ,
-                                Math.floor(Math.random() * 100) ,
-                                Math.floor(Math.random() * 100) ,
-                                Math.floor(Math.random() * 100) ,
-                                Math.floor(Math.random() * 100) ,
-                            ],
+                            data: heightArr,
+                            color: (opacity = 1) => `rgba(144, 124, 255, 1)`,
                         }
                     ]
                 }}
-                width={width-40} // from react-native
+                width={width - 40} // from react-native
                 height={230}
+                yAxisLabel={''}
+                yAxisSuffix={''}
                 showValuesOnTopOfBars={true}
-                withHorizontalLabels={false}
+                withHorizontalLabels={true}
                 withInnerLines={false}
                 chartConfig={{
                     backgroundGradientFrom: '#ffffff',
                     backgroundGradientTo: '#ffffff',
                     fillShadowGradient: '#907cff',
                     fillShadowGradientOpacity: 200,
-                    decimalPlaces: 2, // optional, defaults to 2dp
+                    decimalPlaces: 0, // optional, defaults to 2dp
                     color: (opacity = 1) => `rgba(144, 124, 255, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(69, 68, 89, ${opacity})`,
                     style: {
@@ -44,4 +39,4 @@ export const ChartBar = ({data}: any) => {
             />
         </View>
     )
-}*/
+}

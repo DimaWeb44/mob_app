@@ -1,11 +1,12 @@
-import {Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from "react";
 import {width} from "../inputs";
 import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 import {MaterialIcons} from "@expo/vector-icons";
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import {useAppDispatch} from "../../bll/hooks";
 import {setFirstDataTC} from "../../bll/firstScreenReducer";
+import * as ImagePicker from "expo-image-picker";
 
 export const FirstScreen = ({}) => {
     const dispatch = useAppDispatch()
@@ -18,6 +19,18 @@ export const FirstScreen = ({}) => {
                                        mode: 'date',
                                        is24Hour: true,
                                    })
+    };
+
+    const pickImage = async (setFieldValue: any) => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+                                                                   mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                                                                   allowsEditing: true,
+                                                                   aspect: [4, 4],
+                                                                   quality: 1,
+                                                               });
+        if (!result.canceled) {
+            setFieldValue('photo', result.assets[0].uri as any);
+        }
     };
 
     const monthNames = [
@@ -41,72 +54,69 @@ export const FirstScreen = ({}) => {
                                                             date
                                                         }))}
         >
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.topBox}/>
-                <View style={styles.bottomBox}/>
-                <View style={styles.content}>
-                    <Text style={styles.title}>Укажите дату рождения ребенка</Text>
-                    <TouchableOpacity onPress={showDatepicker}
-                                      style={styles.inputBtn}>
-                        <View style={styles.dateBox}>
-                            <View style={styles.date}>
-                                <Text style={styles.titleDate}>{date.getDate()}</Text>
+            {({handleChange, setFieldValue, handleSubmit, values}) => (
+                <SafeAreaView style={styles.container}>
+                    <View style={styles.topBox}/>
+                    <View style={styles.bottomBox}/>
+                    <View style={styles.content}>
+                        <Text style={styles.title}>Укажите дату рождения ребенка</Text>
+                        <TouchableOpacity onPress={showDatepicker}
+                                          style={styles.inputBtn}>
+                            <View style={styles.dateBox}>
+                                <View style={styles.date}>
+                                    <Text style={styles.titleDate}>{date.getDate()}</Text>
+                                </View>
+                                <View style={{...styles.date, ...styles.dateMos}}>
+                                    <Text style={styles.titleDate}>{monthNames[date.getMonth()]}</Text>
+                                </View>
+                                <View style={styles.date}>
+                                    <Text style={styles.titleDate}>{date.getFullYear()}</Text>
+                                </View>
                             </View>
-                            <View style={{...styles.date, ...styles.dateMos}}>
-                                <Text style={styles.titleDate}>{monthNames[date.getMonth()]}</Text>
-                            </View>
-                            <View style={styles.date}>
-                                <Text style={styles.titleDate}>{date.getFullYear()}</Text>
+                        </TouchableOpacity>
+                        <View style={styles.itemBox}>
+                            <Text style={{...styles.title, marginTop: 0,}}>Укажите рост ребенка</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={handleChange('height')}
+                                value={values.height}
+                                placeholder="см"
+                                keyboardType="numeric"/>
+                        </View>
+                        <View style={styles.itemBox}>
+                            <Text style={{...styles.title, marginTop: 0,}}>Укажите вес ребенка</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={handleChange('weight')}
+                                value={values.weight}
+                                placeholder="кг"
+                                keyboardType="numeric"/>
+                        </View>
+                        <View style={styles.itemBox}>
+                            <Text style={{...styles.title, marginTop: 0,}}>Добавьте фото ребенка</Text>
+                            <View style={styles.photoBox}>
+                                {values.photo
+                                    ? <Image style={styles.photo} source={{uri: `${values.photo}`}}/>
+                                    : <MaterialIcons name="child-care" size={85} color="#C0C0C0"/>}
+                                <TouchableOpacity style={styles.photoBtn}
+                                                  onPress={() => pickImage(setFieldValue)}>
+                                    <MaterialIcons name="photo-camera" size={24} color="white"/>
+                                </TouchableOpacity>
                             </View>
                         </View>
-                    </TouchableOpacity>
-                    <View style={styles.itemBox}>
-                        <Text style={{...styles.title, marginTop: 0,}}>Укажите рост ребенка</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={handleChange('height')}
-                            value={values.height}
-                            placeholder="см"
-                            keyboardType="numeric"/>
-                    </View>
-                    <View style={styles.itemBox}>
-                        <Text style={{...styles.title, marginTop: 0,}}>Укажите вес ребенка</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={handleChange('weight')}
-                            value={values.weight}
-                            placeholder="кг"
-                            keyboardType="numeric"/>
-                    </View>
-                    <View style={styles.itemBox}>
-                        <Text style={{...styles.title, marginTop: 0,}}>Добавьте фото ребенка</Text>
-                        <View style={styles.photoBox}>
-                            <MaterialIcons name="child-care" size={85} color="#C0C0C0"/>
-                            {/*  <Image
-                            style={styles.photo}
-                            source={{
-                                uri: 'https://i.pinimg.com/originals/e7/39/24/e73924d665c828a3abff536e37bb5742.jpg',
-                            }}
-                        />*/}
-                            <TouchableOpacity style={styles.photoBtn}
-                                              onPress={() => {
-
-                                              }}>
-                                <MaterialIcons name="photo-camera" size={24} color="white"/>
+                        <View style={styles.buttonBox}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    values.height && values.weight
+                                        ? handleSubmit()
+                                        : Alert.alert('Заполните все поля')
+                                }}
+                                style={styles.button}>
+                                <Text style={styles.titleBti}>СОХРАНИТЬ</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={styles.buttonBox}>
-                        <TouchableOpacity
-                            onPress={()=>handleSubmit()}
-                            style={styles.button}
-                        >
-                            <Text style={styles.titleBti}>СОХРАНИТЬ</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </SafeAreaView>
+                </SafeAreaView>
             )}
         </Formik>
     )

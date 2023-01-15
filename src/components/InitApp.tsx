@@ -3,16 +3,26 @@ import React, {useEffect} from "react";
 import {initializeAppTC} from "../bll/appReducer";
 import {TabNavigator} from "../navigation/TabNavigator";
 import {FirstScreen} from "../scenes/first-screen";
+import {ActivityIndicator} from "react-native";
 
 export const InitApp = () => {
     const dispatch = useAppDispatch()
-    const isInitialized = useAppSelector(state => state.app.data)
+    const firstData = useAppSelector(state => state.firstData.firstData)
+    const loading = useAppSelector(state => state.app.loading)
 
     useEffect(() => {
         dispatch(initializeAppTC())
+         let keys = ['data', 'firstData'];
+         /*AsyncStorage.multiRemove(keys, err => {
+             // keys k1 & k2 removed, if they existed
+             // do most stuff after removal (if you want)
+         });*/
     }, [])
 
     return (
-        isInitialized !== null ? <TabNavigator/> : <FirstScreen/>
+        loading
+            ? <ActivityIndicator size="large"
+                                 color="#FF5CBE"/>
+            : firstData !== null ? <TabNavigator/> : <FirstScreen/>
     )
 }

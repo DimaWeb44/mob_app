@@ -1,69 +1,126 @@
 import React from 'react';
-import {Dimensions, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+    Alert,
+    Dimensions,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
+import uuid from 'react-native-uuid';
+import {Formik} from 'formik';
+import {useAppDispatch} from "../../bll/hooks";
+import * as ImagePicker from "expo-image-picker";
+import {setItemTC} from "../../bll/appReducer";
 
 export const width = Dimensions.get('window').width
 
 export const InputsScreen = () => {
+    const dispatch = useAppDispatch()
+
+    const pickImage = async (setFieldValue: any) => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+                                                                   mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                                                                   allowsEditing: true,
+                                                                   aspect: [4, 4],
+                                                                   quality: 1,
+                                                               });
+        if (!result.canceled) {
+            setFieldValue('photo', result.assets[0].uri as any);
+        }
+    };
+
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.photoBox}>
-                <Image
-                    style={styles.photo}
-                    source={{
-                        uri: 'https://i.pinimg.com/originals/e7/39/24/e73924d665c828a3abff536e37bb5742.jpg',
-                    }}
-                />
-                <TouchableOpacity style={styles.photoBtn}>
-                    <MaterialIcons name="photo-camera" size={24} color="white"/>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.inputsBox}>
-                <View style={styles.itemBox}>
-                    <Text style={styles.title}>Возраст</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={() => {
+        <Formik
+            initialValues={
+                {
+                    age: '',
+                    weight: '',
+                    height: '',
+                    photo: '',
+                }
+            }
+            onSubmit={(values, {resetForm}) => {
+                dispatch(setItemTC({
+                                       id: uuid.v4(),
+                                       weight: values.weight,
+                                       height: values.height,
+                                       photo: values.photo,
+                                       age: values.age
+                                   }))
+                resetForm()
+                Alert.alert('Данные сохранены успешно')
+            }
+            }
+        >
+            {({handleChange, setFieldValue, handleSubmit, values}) => (
+                <SafeAreaView style={styles.container}>
+                    <View style={styles.photoBox}>
+                        {values.photo
+                            ? <Image style={styles.photo} source={{uri: `${values.photo}`}}/>
+                            : <MaterialIcons name="child-care" size={120} color="#C0C0C0"/>}
+                        <TouchableOpacity style={styles.photoBtn} onPress={() => pickImage(setFieldValue)}>
+                            <MaterialIcons name="photo-camera" size={24} color="white"/>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.inputsBox}>
+                        <View style={styles.itemBox}>
+                            <Text style={styles.title}>Возраст</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={values.age}
+                                onChangeText={handleChange('age')}
+                                placeholder="мес"
+                                keyboardType="numeric"
+                            />
+                        </View>
+                        <View style={styles.itemBox}>
+                            <Text style={styles.title}>Вес</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={values.weight}
+                                onChangeText={handleChange('weight')}
+                                placeholder="кг"
+                                keyboardType="numeric"
+                            />
+                        </View>
+                        <View style={styles.itemBox}>
+                            <Text style={styles.title}>Рост</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={values.height}
+                                onChangeText={handleChange('height')}
+                                placeholder="см"
+                                keyboardType="numeric"
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.bmi}>
+                        <Text style={styles.titleBmi}>ИМТ</Text>
+                        <Text
+                            style={styles.numberBmi}>{values.weight && values.height
+                            ? (Math.round(+values.weight / ((+values.height / 100) * (+values.height / 100)))).toString().length > 2
+                                ? <Text style={{color: '#a22828', fontSize: 12}}>некорректные данные</Text>
+                                : (Math.round(+values.weight / ((+values.height / 100) * (+values.height / 100))))
+                            : 0}</Text>
+                    </View>
+                    <View style={styles.buttonBox}>
+                        <TouchableOpacity onPress={() => {
+                            values.height && values.age && values.weight
+                                ? handleSubmit()
+                                : Alert.alert('Заполните все поля')
                         }}
-                        placeholder="мес"
-                        keyboardType="numeric"
-                    />
-                </View>
-                <View style={styles.itemBox}>
-                    <Text style={styles.title}>Вес</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={() => {
-                        }}
-                        placeholder="кг"
-                        keyboardType="numeric"
-                    />
-                </View>
-                <View style={styles.itemBox}>
-                    <Text style={styles.title}>Рост</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={() => {
-                        }}
-                        placeholder="см"
-                        keyboardType="numeric"
-                    />
-                </View>
-            </View>
-            <View style={styles.bmi}>
-                <Text style={styles.titleBmi}>ИМТ</Text>
-                <Text style={styles.numberBmi}>22</Text>
-            </View>
-            <View style={styles.buttonBox}>
-                <TouchableOpacity
-                    onPress={() => {
-                    }}
-                    style={styles.button}
-                >
-                    <Text style={styles.titleBti}>СОХРАНИТЬ</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+                                          style={styles.button}>
+                            <Text style={styles.titleBti}>СОХРАНИТЬ</Text>
+                        </TouchableOpacity>
+                    </View>
+                </SafeAreaView>
+            )}
+        </Formik>
     )
 }
 
@@ -78,6 +135,10 @@ const styles = StyleSheet.create({
                                          marginVertical: 20,
                                          width: 240,
                                          height: 240,
+                                         borderRadius: 240,
+                                         alignItems: "center",
+                                         justifyContent: "center",
+                                         backgroundColor: '#F5F5F5',
                                      },
                                      photo: {
                                          width: 240,

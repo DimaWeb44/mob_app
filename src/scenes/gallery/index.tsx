@@ -1,60 +1,16 @@
 import React from 'react';
 import {FlatList, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {width} from "../inputs";
-
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        age: 1,
-        weight: 6,
-        height: 55,
-        photo: 'http://www.lenprezdravie.sk/album/titulka/thumbnail-5-pravidiel-na-ceste-k-babatku-201315.jpg',
-    },
-    {
-        id: 'bd7acfghfgxbea-c1b1-46c2-aeggd5-3ad53abb28ba',
-        age: 1,
-        weight: 5,
-        height: 55,
-        photo: 'https://i.pinimg.com/140x140_RS/a5/89/4b/a5894b2fefde882fb17d09dbec8b0ea5.jpg',
-    },
-    {
-        id: 'bd7acbgnxgnea-c1b1-46c2-aed5-3ad53abb28ba',
-        age: 1,
-        weight: 5,
-        height: 55,
-        photo: 'https://img0cf.b8cdn.com/images/uploads/user_photos/99/15301999_20140811152501.jpg',
-    },
-    {
-        id: 'bd7acbxnsrgtnrsea-c1b1-46c2-aed5-3ad53abb28ba',
-        age: 1,
-        weight: 5,
-        height: 55,
-        photo: 'https://i.mycdn.me/i?r=AzEPZsRbOZEKgBhR0XGMT1RkkK12DKjtZQMxVi_NkjHBBqaKTM5SRkZCeTgDn6uOyic',
-    },
-    {
-        id: 'bd7atrjrtjsrcbea-c1b1-46c2-aeeed5-3ad53abb28ba',
-        age: 1,
-        weight: 5,
-        height: 55,
-        photo: 'https://img0cf.b8cdn.com/images/uploads/user_photos/41/12600841_20120806213938.jpg',
-    },
-    {
-        id: 'bd7acbea-c1ffb1-46c2-aeewffd5-3ad53abb28ba',
-        age: 1,
-        weight: 5,
-        height: 55,
-        photo: 'https://itsaschorrthing.com/wp-content/uploads/2018/05/Bailey-hands-3-140x140.jpg',
-    },
-];
+import {useAppSelector} from "../../bll/hooks";
+import {MaterialIcons} from "@expo/vector-icons";
 
 const Item = ({item}: any) => (
     <View style={styles.item}>
-        <Image
-            style={styles.photo}
-            source={{
-                uri: item.photo,
-            }}
-        />
+        <View style={styles.photoBox}>
+            {item.photo
+                ? <Image style={styles.photo} source={{uri: `${item.photo}`}}/>
+                : <MaterialIcons name="child-care" size={70} color="#C0C0C0"/>}
+        </View>
         <View style={styles.textContainer}>
             <View style={styles.textBox}>
                 <Text style={styles.title}>Возраст</Text>
@@ -71,6 +27,16 @@ const Item = ({item}: any) => (
 );
 
 export const GalleryScreen = () => {
+    const data = useAppSelector(state => state.app.data)
+    const dataSort = data && data.sort(function (a: any, b: any) {
+        if (+a.age > +b.age) {
+            return -1;
+        }
+        if (+a.age < +b.age) {
+            return 1;
+        }
+        return 0;
+    });
 
     const renderItem = ({item}: any) => (
         <Item item={item}/>
@@ -78,11 +44,13 @@ export const GalleryScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <FlatList
-                data={DATA}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-            />
+            {dataSort
+                ? <FlatList
+                    data={dataSort}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                />
+                : <Text style={styles.title}>Нет данных</Text>}
         </SafeAreaView>
     )
 }
@@ -100,6 +68,14 @@ const styles = StyleSheet.create({
                                          marginHorizontal: 20,
                                          flexDirection: "row"
                                      },
+                                     photoBox: {
+                                         width: 140,
+                                         height: 140,
+                                         borderRadius: 140,
+                                         backgroundColor: '#F5F5F5',
+                                         alignItems: "center",
+                                         justifyContent: "center"
+                                     },
                                      photo: {
                                          width: 140,
                                          height: 140,
@@ -111,7 +87,7 @@ const styles = StyleSheet.create({
                                          flexDirection: "row",
                                          alignItems: "center",
                                      },
-                                     textBox:{
+                                     textBox: {
                                          marginRight: 30,
                                      },
                                      title: {
