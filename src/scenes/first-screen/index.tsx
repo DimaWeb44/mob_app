@@ -7,16 +7,33 @@ import {Formik} from 'formik';
 import {useAppDispatch} from "../../bll/hooks";
 import {setFirstDataTC} from "../../bll/firstScreenReducer";
 import * as ImagePicker from "expo-image-picker";
+import {setItemTC} from "../../bll/appReducer";
+import uuid from "react-native-uuid";
+
+export const monthNames = [
+    "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
+    "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
+]
 
 export const FirstScreen = ({}) => {
     const dispatch = useAppDispatch()
     const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState( new Date());
 
     const showDatepicker = () => {
         DateTimePickerAndroid.open({
                                        value: date,
                                        onChange: (event: any, selectedDate: any) => setDate(selectedDate),
                                        mode: 'date',
+                                       is24Hour: true,
+                                   })
+    };
+
+    const showDatepickerTime = () => {
+        DateTimePickerAndroid.open({
+                                       value: time,
+                                       onChange: (event: any, selectedTime: any) => setTime(selectedTime),
+                                       mode: 'time',
                                        is24Hour: true,
                                    })
     };
@@ -33,11 +50,6 @@ export const FirstScreen = ({}) => {
         }
     };
 
-    const monthNames = [
-        "Января", "Февраля", "Мара", "Апреля", "Мая", "Июня",
-        "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
-    ]
-
     return (
         <Formik
             initialValues={
@@ -47,12 +59,22 @@ export const FirstScreen = ({}) => {
                     photo: '',
                 }
             }
-            onSubmit={values => dispatch(setFirstDataTC({
-                                                            weight: values.weight,
-                                                            height: values.height,
-                                                            photo: values.photo,
-                                                            date
-                                                        }))}
+            onSubmit={values => {
+                dispatch(setFirstDataTC({
+                                            weight: values.weight,
+                                            height: values.height,
+                                            photo: values.photo,
+                                            date,
+                                            time
+                                        }))
+                dispatch(setItemTC({
+                                       weight: values.weight,
+                                       height: values.height,
+                                       photo: values.photo,
+                                       age: 0,
+                                       id: uuid.v4()
+                                   }))
+            }}
         >
             {({handleChange, setFieldValue, handleSubmit, values}) => (
                 <SafeAreaView style={styles.container}>
@@ -75,22 +97,30 @@ export const FirstScreen = ({}) => {
                             </View>
                         </TouchableOpacity>
                         <View style={styles.itemBox}>
-                            <Text style={{...styles.title, marginTop: 0,}}>Укажите рост ребенка</Text>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={handleChange('height')}
-                                value={values.height}
-                                placeholder="см"
-                                keyboardType="numeric"/>
+                            <Text style={{...styles.title, marginTop: 0,}}>Укажите время рождения</Text>
+                            <TouchableOpacity onPress={showDatepickerTime}
+                                              style={styles.inputBtn}>
+                                <View style={{...styles.date, ...styles.dateMos}}>
+                                    <Text style={styles.titleDate}>{time.getHours()}:{time.getMinutes()}</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.itemBox}>
-                            <Text style={{...styles.title, marginTop: 0,}}>Укажите вес ребенка</Text>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={handleChange('weight')}
-                                value={values.weight}
-                                placeholder="кг"
-                                keyboardType="numeric"/>
+                            <Text style={{...styles.title, marginTop: 0,}}>Укажите рост и вес при рождении</Text>
+                            <View style={styles.heightWeight}>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={handleChange('height')}
+                                    value={values.height}
+                                    placeholder="см"
+                                    keyboardType="numeric"/>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={handleChange('weight')}
+                                    value={values.weight}
+                                    placeholder="кг"
+                                    keyboardType="numeric"/>
+                            </View>
                         </View>
                         <View style={styles.itemBox}>
                             <Text style={{...styles.title, marginTop: 0,}}>Добавьте фото ребенка</Text>
@@ -196,7 +226,8 @@ const styles = StyleSheet.create({
                                          borderRadius: 10,
                                          borderColor: "#BBBBBB",
                                          textAlign: "center",
-                                         color: '#9E9E9E'
+                                         color: '#9E9E9E',
+                                         marginHorizontal: 12,
                                      },
                                      photoBox: {
                                          marginVertical: 20,
@@ -238,5 +269,8 @@ const styles = StyleSheet.create({
                                          color: '#ffffff',
                                          fontSize: 14,
                                          fontWeight: '600',
+                                     },
+                                     heightWeight: {
+                                         flexDirection: "row",
                                      }
                                  });

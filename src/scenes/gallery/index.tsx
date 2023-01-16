@@ -1,30 +1,50 @@
-import React from 'react';
-import {FlatList, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {Button, FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {width} from "../inputs";
-import {useAppSelector} from "../../bll/hooks";
-import {MaterialIcons} from "@expo/vector-icons";
+import {useAppDispatch, useAppSelector} from "../../bll/hooks";
+import {Entypo, MaterialIcons} from "@expo/vector-icons";
+import Modal from "react-native-modal";
+import {deleteItemTC} from "../../bll/appReducer";
 
-const Item = ({item}: any) => (
-    <View style={styles.item}>
-        <View style={styles.photoBox}>
-            {item.photo
-                ? <Image style={styles.photo} source={{uri: `${item.photo}`}}/>
-                : <MaterialIcons name="child-care" size={70} color="#C0C0C0"/>}
-        </View>
-        <View style={styles.textContainer}>
-            <View style={styles.textBox}>
-                <Text style={styles.title}>Возраст</Text>
-                <Text style={styles.title}>Вес</Text>
-                <Text style={styles.title}>Рост</Text>
+
+const Item = ({item}: any) => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const handleModal = () => setIsModalVisible(() => !isModalVisible);
+    const dispatch = useAppDispatch()
+
+    return (
+        <View style={styles.item}>
+            <Modal isVisible={isModalVisible}>
+                <View style={styles.modal}>
+                    <Image style={styles.modalPhoto} source={{uri: `${item.photo}`}}/>
+                    <Button title="Закрыть фото" onPress={handleModal}/>
+                </View>
+            </Modal>
+            <View style={styles.photoBox}>
+                {item.photo
+                    ? <TouchableOpacity onPress={handleModal}>
+                        <Image style={styles.photo} source={{uri: `${item.photo}`}}/>
+                    </TouchableOpacity>
+                    : <MaterialIcons name="child-care" size={70} color="#C0C0C0"/>}
             </View>
-            <View style={styles.textBox}>
-                <Text style={styles.values}>{item.age} мес</Text>
-                <Text style={styles.values}>{item.weight} кг</Text>
-                <Text style={styles.values}>{item.height} см</Text>
+            <View style={styles.textContainer}>
+                <View style={styles.textBox}>
+                    <Text style={styles.title}>Возраст</Text>
+                    <Text style={styles.title}>Вес</Text>
+                    <Text style={styles.title}>Рост</Text>
+                </View>
+                <View style={styles.textBox}>
+                    <Text style={styles.values}>{item.age} мес</Text>
+                    <Text style={styles.values}>{item.weight} кг</Text>
+                    <Text style={styles.values}>{item.height} см</Text>
+                </View>
             </View>
+            <TouchableOpacity style={styles.dots} onPress={() => {}}>
+                <Entypo name="dots-three-vertical" size={20} color="black"/>
+            </TouchableOpacity>
         </View>
-    </View>
-);
+    )
+}
 
 export const GalleryScreen = () => {
     const data = useAppSelector(state => state.app.data)
@@ -61,12 +81,13 @@ const styles = StyleSheet.create({
                                          backgroundColor: '#FFFFFF',
                                          alignItems: 'center',
                                          justifyContent: 'center',
+                                         position: "relative",
+                                         width: width,
                                      },
                                      item: {
-                                         width: width,
+                                         width: width-30,
                                          marginVertical: 15,
-                                         marginHorizontal: 20,
-                                         flexDirection: "row"
+                                         flexDirection: "row",
                                      },
                                      photoBox: {
                                          width: 140,
@@ -90,6 +111,11 @@ const styles = StyleSheet.create({
                                      textBox: {
                                          marginRight: 30,
                                      },
+                                     dots:{
+                                         position: "absolute",
+                                         top: 5,
+                                         right: 0
+                                     },
                                      title: {
                                          fontWeight: '400',
                                          fontSize: 14,
@@ -103,5 +129,18 @@ const styles = StyleSheet.create({
                                          lineHeight: 16,
                                          marginVertical: 5,
                                          color: '#000000',
-                                     }
+                                     },
+                                     modalPhoto: {
+                                         width: width - 20,
+                                         height: width,
+                                         borderRadius: 25,
+                                         borderWidth: 1,
+                                         borderColor: "#000",
+                                         borderStyle: "solid",
+                                     },
+                                     modal: {
+                                         flex: 1,
+                                         alignItems: 'center',
+                                         justifyContent: 'center',
+                                     },
                                  });

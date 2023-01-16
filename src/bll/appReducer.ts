@@ -1,6 +1,7 @@
 import {getData, setData} from '../api/api'
 import {AppActionsType, AppDispatchType, AppThunkType, RootStateType} from "./store";
 import {setFirstData} from "./firstScreenReducer";
+import {Alert} from "react-native";
 
 const initialState: InitialStateType = {
     data: null,
@@ -32,7 +33,6 @@ export const initializeAppTC = (): AppThunkType => (dispatch: AppDispatchType) =
         .then(res => {
             if (res !== null) {
                 dispatch(setFirstData(res))
-                dispatch(toggleLoading())
                 getData('data').then((res => {
                     if (res !== null) {
                         dispatch(setAppData(res))
@@ -42,23 +42,28 @@ export const initializeAppTC = (): AppThunkType => (dispatch: AppDispatchType) =
         })
         .catch((e) => {
         })
+        .finally(() => dispatch(toggleLoading()))
 }
 
 export const setItemTC = (item: any): AppThunkType => (dispatch: AppDispatchType, getStore: GetStore) => {
     const {data} = getStore().app
-    data
-        ? setData([item, ...data], 'data')
+        setData(data ? [item, ...data] : [item], 'data')
         .then(res => {
             dispatch(setItem(item))
         })
         .catch((e) => {
         })
-        :setData([item], 'data')
-            .then(res => {
-                dispatch(setItem(item))
-            })
-            .catch((e) => {
-            })
+}
+
+export const deleteItemTC = (id: any): AppThunkType => (dispatch: AppDispatchType, getStore: GetStore) => {
+    const {data} = getStore().app
+    const newData = data.filter((item: any) => item.id !== id )
+    setData( [...newData], 'data')
+        .then(res => {
+            dispatch(setAppData(newData))
+        })
+        .catch((e) => {
+        })
 }
 
 // types
@@ -67,6 +72,9 @@ export type InitialStateType = { data: any, loading: boolean }
 export type SetAppDataActionType = ReturnType<typeof setAppData>
 export type SetItemActionType = ReturnType<typeof setItem>
 export type ToggleLoadingActionType = ReturnType<typeof toggleLoading>
-export type ActionsTypeApp = | SetAppDataActionType | SetItemActionType | ToggleLoadingActionType
+export type ActionsTypeApp =
+    | SetAppDataActionType
+    | SetItemActionType
+    | ToggleLoadingActionType
 
 
