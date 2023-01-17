@@ -13,15 +13,17 @@ import {
 import {MaterialIcons} from '@expo/vector-icons';
 import uuid from 'react-native-uuid';
 import {Formik} from 'formik';
-import {useAppDispatch} from "../../bll/hooks";
+import {useAppDispatch, useAppSelector} from "../../bll/hooks";
 import * as ImagePicker from "expo-image-picker";
-import {setItemTC} from "../../bll/appReducer";
+import {changeItem, changeItemTC, setItemTC} from "../../bll/appReducer";
+import {useNavigation} from "@react-navigation/native";
 
 export const width = Dimensions.get('window').width
 
 export const InputsScreen = () => {
     const dispatch = useAppDispatch()
-
+    const item = useAppSelector(state => state.app.item)
+    const navigation = useNavigation()
     const pickImage = async (setFieldValue: any) => {
         let result = await ImagePicker.launchImageLibraryAsync({
                                                                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -34,24 +36,41 @@ export const InputsScreen = () => {
         }
     };
 
+    const values = {
+        age: '',
+        weight: '',
+        height: '',
+        photo: '',
+    }
+
+  /*  React.useEffect(() => {
+        return navigation.addListener('blur', () => {
+            if (navigation.getState().key !== 'Inputs') {
+                dispatch(changeItem(null))
+            }
+        });
+    }, [item]);*/
+
     return (
         <Formik
-            initialValues={
-                {
-                    age: '',
-                    weight: '',
-                    height: '',
-                    photo: '',
-                }
-            }
+            enableReinitialize={true}
+            initialValues={item ? item : values}
             onSubmit={(values, {resetForm}) => {
-                dispatch(setItemTC({
-                                       id: uuid.v4(),
-                                       weight: values.weight,
-                                       height: values.height,
-                                       photo: values.photo,
-                                       age: values.age
-                                   }))
+                item
+                    ? dispatch(changeItemTC(item.id, {
+                        id: uuid.v4(),
+                        weight: values.weight,
+                        height: values.height,
+                        photo: values.photo,
+                        age: values.age
+                    }))
+                    : dispatch(setItemTC({
+                                             id: uuid.v4(),
+                                             weight: values.weight,
+                                             height: values.height,
+                                             photo: values.photo,
+                                             age: values.age
+                                         }))
                 resetForm()
                 Alert.alert('Данные сохранены успешно')
             }

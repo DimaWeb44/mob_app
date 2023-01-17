@@ -1,23 +1,53 @@
 import React, {useState} from 'react';
-import {Button, FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {width} from "../inputs";
 import {useAppDispatch, useAppSelector} from "../../bll/hooks";
-import {Entypo, MaterialIcons} from "@expo/vector-icons";
+import {AntDesign, Entypo, MaterialIcons} from "@expo/vector-icons";
 import Modal from "react-native-modal";
-import {deleteItemTC} from "../../bll/appReducer";
-
+import {changeItem, deleteItemTC} from "../../bll/appReducer";
+import {useNavigation} from "@react-navigation/native";
 
 const Item = ({item}: any) => {
+    const navigation = useNavigation()
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const handleModal = () => setIsModalVisible(() => !isModalVisible);
+    const [isModalDelRef, setIsModalDelRef] = useState(false)
+
+    const handleModal = () => setIsModalVisible(() => !isModalVisible)
+    const handleModalDelRef = () => setIsModalDelRef(() => !isModalDelRef)
     const dispatch = useAppDispatch()
 
     return (
         <View style={styles.item}>
             <Modal isVisible={isModalVisible}>
                 <View style={styles.modal}>
+                    <TouchableOpacity style={styles.modalClose} onPress={handleModal}>
+                        <AntDesign name="close" size={34} color="black"/>
+                    </TouchableOpacity>
                     <Image style={styles.modalPhoto} source={{uri: `${item.photo}`}}/>
-                    <Button title="Закрыть фото" onPress={handleModal}/>
+                </View>
+            </Modal>
+            <Modal isVisible={isModalDelRef}>
+                <View style={styles.modalDelRef}>
+                    <TouchableOpacity style={styles.modalClose} onPress={handleModalDelRef}>
+                        <AntDesign name="close" size={26} color="black"/>
+                    </TouchableOpacity>
+                    <Text style={{...styles.values, fontSize: 16}}>Выберите действие</Text>
+                    <View style={styles.modalBox}>
+                        <TouchableOpacity style={styles.modalBtn} onPress={() => {
+                            handleModalDelRef()
+                            dispatch(changeItem(item))
+                            navigation.navigate('Inputs' as never, {} as never)
+                        }}>
+                            <Text style={styles.btnTitle}>Изменить запись</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{...styles.modalBtn, backgroundColor: '#a22828'}}
+                                          onPress={() => {
+                                              handleModalDelRef()
+                                              dispatch(deleteItemTC(item.id))
+                                          }}>
+                            <Text style={styles.btnTitle}>Удалить запись</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </Modal>
             <View style={styles.photoBox}>
@@ -39,7 +69,7 @@ const Item = ({item}: any) => {
                     <Text style={styles.values}>{item.height} см</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.dots} onPress={() => {}}>
+            <TouchableOpacity style={styles.dots} onPress={handleModalDelRef}>
                 <Entypo name="dots-three-vertical" size={20} color="black"/>
             </TouchableOpacity>
         </View>
@@ -85,7 +115,7 @@ const styles = StyleSheet.create({
                                          width: width,
                                      },
                                      item: {
-                                         width: width-30,
+                                         width: width - 30,
                                          marginVertical: 15,
                                          flexDirection: "row",
                                      },
@@ -111,7 +141,7 @@ const styles = StyleSheet.create({
                                      textBox: {
                                          marginRight: 30,
                                      },
-                                     dots:{
+                                     dots: {
                                          position: "absolute",
                                          top: 5,
                                          right: 0
@@ -139,8 +169,35 @@ const styles = StyleSheet.create({
                                          borderStyle: "solid",
                                      },
                                      modal: {
-                                         flex: 1,
                                          alignItems: 'center',
                                          justifyContent: 'center',
+                                         position: "relative"
                                      },
+                                     modalClose: {
+                                         position: "absolute",
+                                         top: 10,
+                                         right: 10,
+                                         zIndex: 2
+                                     },
+                                     modalDelRef: {
+                                         alignItems: 'center',
+                                         justifyContent: 'center',
+                                         width: width - 40,
+                                         backgroundColor: '#fff',
+                                         height: width / 2,
+                                         borderRadius: 25
+                                     },
+                                     modalBtn: {
+                                         backgroundColor: "#585CCF",
+                                         borderRadius: 10,
+                                         marginHorizontal: 10,
+                                         marginTop: 30
+                                     },
+                                     btnTitle: {
+                                         color: '#fff',
+                                         margin: 10
+                                     },
+                                     modalBox: {
+                                         flexDirection: "row"
+                                     }
                                  });
