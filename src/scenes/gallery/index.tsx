@@ -18,7 +18,9 @@ const Item = ({item}: any) => {
 
     return (
         <View style={styles.item}>
-            <Modal isVisible={isModalVisible}>
+            <Modal isVisible={isModalVisible}
+                   onBackButtonPress={handleModal}
+                   animationIn={"fadeIn"}>
                 <View style={styles.modal}>
                     <TouchableOpacity style={styles.modalClose} onPress={handleModal}>
                         <AntDesign name="close" size={34} color="black"/>
@@ -26,7 +28,12 @@ const Item = ({item}: any) => {
                     <Image style={styles.modalPhoto} source={{uri: `${item.photo}`}}/>
                 </View>
             </Modal>
-            <Modal isVisible={isModalDelRef}>
+            <Modal isVisible={isModalDelRef}
+                   onBackButtonPress={handleModalDelRef}
+                   animationIn={"fadeIn"}
+                   animationOut={"fadeOut"}
+                   animationOutTiming={100}
+                   backdropTransitionOutTiming={100}>
                 <View style={styles.modalDelRef}>
                     <TouchableOpacity style={styles.modalClose} onPress={handleModalDelRef}>
                         <AntDesign name="close" size={26} color="black"/>

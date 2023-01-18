@@ -43,13 +43,13 @@ export const InputsScreen = () => {
         photo: '',
     }
 
-  /*  React.useEffect(() => {
+    React.useEffect(() => {
         return navigation.addListener('blur', () => {
-            if (navigation.getState().key !== 'Inputs') {
-                dispatch(changeItem(null))
+            if (item) {
+                dispatch(changeItem(null ))
             }
         });
-    }, [item]);*/
+    }, [item]);
 
     return (
         <Formik

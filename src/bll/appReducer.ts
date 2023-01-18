@@ -17,7 +17,7 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
         case 'APP/TOGGLE-LOADING':
             return {...state, loading: !state.loading}
         case 'APP/CHANGE-ITEM':
-            return {...state, item: {...action.item}}
+            return {...state, item: action.item}
         default:
             return {...state}
     }
