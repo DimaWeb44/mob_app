@@ -19,6 +19,7 @@ import {changeItem, changeItemTC, setItemTC} from "../../bll/appReducer";
 import {useNavigation} from "@react-navigation/native";
 
 export const width = Dimensions.get('window').width
+export const height = Dimensions.get('window').height
 
 export const InputsScreen = () => {
     const dispatch = useAppDispatch()

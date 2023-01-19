@@ -28,7 +28,7 @@ export const HomeScreen = () => {
         <SafeAreaView style={styles.container}>
             <Text style={{fontSize: 20}}>Ваш малыш родился</Text>
             <Text
-                style={{fontSize: 20}}>в {time.getHours()}:{time.getMinutes()} {date.getDate()} {monthNames[date.getMonth()]} {date.getFullYear()}</Text>
+                style={{fontSize: 20}}>{date.getDate()} {monthNames[date.getMonth()]} {date.getFullYear()} в {time.getHours()}:{time.getMinutes()}</Text>
             <Text style={{fontSize: 20}}>Cейчас ему</Text>
             <Text
                 style={styles.title}>

@@ -1,6 +1,6 @@
 import {Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from "react";
-import {width} from "../inputs";
+import {height, width} from "../inputs";
 import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 import {MaterialIcons} from "@expo/vector-icons";
 import {Formik} from 'formik';
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
                                          backgroundColor: '#ffffff',
                                      },
                                      content: {
-                                         top: 120,
+                                         top: height/6-10,
                                          width: width - 20,
                                          borderRadius: 30,
                                          position: "absolute",
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
                                          fontSize: 12,
                                          lineHeight: 16,
                                          color: '#000000',
-                                         marginTop: 25,
+                                         marginTop: height/15-25,
                                      },
                                      inputBtn: {
                                          alignItems: "center",
-                                         marginTop: 20
+                                         marginTop: height/15-35
                                      },
                                      dateBox: {
                                          width: width - 40,
@@ -196,9 +196,9 @@ const styles = StyleSheet.create({
                                          flexDirection: "row",
                                      },
                                      date: {
-                                         height: 60,
-                                         width: 80,
-                                         marginHorizontal: 12,
+                                         height: height/12-5,
+                                         width: width/5 ,
+                                         marginHorizontal: width/30,
                                          borderWidth: 1,
                                          borderRadius: 10,
                                          borderColor: "#BBBBBB",
@@ -206,21 +206,21 @@ const styles = StyleSheet.create({
                                          justifyContent: "center"
                                      },
                                      dateMos: {
-                                         width: 110
+                                         width: width/5+30
                                      },
                                      titleDate: {
                                          fontSize: 14,
                                          color: '#9E9E9E'
                                      },
                                      itemBox: {
-                                         marginTop: 25,
+                                         marginTop: height/15-25,
                                          alignItems: "center",
                                          justifyContent: "center"
                                      },
                                      input: {
-                                         height: 60,
-                                         width: 110,
-                                         marginTop: 20,
+                                         height: height/12-5,
+                                         width: width/5+30,
+                                         marginTop: height/15-35,
                                          borderWidth: 1,
                                          fontSize: 14,
                                          borderRadius: 10,
@@ -230,18 +230,18 @@ const styles = StyleSheet.create({
                                          marginHorizontal: 12,
                                      },
                                      photoBox: {
-                                         marginVertical: 20,
-                                         width: 170,
-                                         height: 170,
-                                         borderRadius: 170,
+                                         marginVertical: height/15-30,
+                                         width: width/3+30,
+                                         height: width/3+30,
+                                         borderRadius: width/3+30,
                                          backgroundColor: '#F5F5F5',
                                          alignItems: "center",
                                          justifyContent: "center"
                                      },
                                      photo: {
-                                         width: 170,
-                                         height: 170,
-                                         borderRadius: 170,
+                                         width: width/3+30,
+                                         height: width/3+30,
+                                         borderRadius: width/3+30,
                                      },
                                      photoBtn: {
                                          position: "absolute",
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
                                          alignItems: "center"
                                      },
                                      button: {
-                                         width: 240,
+                                         width: width/2+30,
                                          alignItems: "center",
                                          backgroundColor: "#585CCF",
                                          padding: 15,
