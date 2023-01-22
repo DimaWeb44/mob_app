@@ -9,6 +9,7 @@ import {setFirstDataTC} from "../../bll/firstScreenReducer";
 import * as ImagePicker from "expo-image-picker";
 import {setItemTC} from "../../bll/appReducer";
 import uuid from "react-native-uuid";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export const monthNames = [
     "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
@@ -77,7 +78,7 @@ export const FirstScreen = ({}) => {
             }}
         >
             {({handleChange, setFieldValue, handleSubmit, values}) => (
-                <SafeAreaView style={styles.container}>
+                <View style={styles.container}>
                     <View style={styles.topBox}/>
                     <View style={styles.bottomBox}/>
                     <View style={styles.content}>
@@ -146,7 +147,7 @@ export const FirstScreen = ({}) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </SafeAreaView>
+                </View>
             )}
         </Formik>
     )
@@ -171,8 +172,8 @@ const styles = StyleSheet.create({
                                          backgroundColor: '#ffffff',
                                      },
                                      content: {
-                                         top: height/6-10,
-                                         width: width - 20,
+                                         top: hp('15%'),
+                                         width: wp('95%'),
                                          borderRadius: 30,
                                          position: "absolute",
                                          zIndex: 1,
@@ -184,21 +185,20 @@ const styles = StyleSheet.create({
                                          fontSize: 12,
                                          lineHeight: 16,
                                          color: '#000000',
-                                         marginTop: height/15-25,
+                                         marginTop: hp('4%'),
                                      },
                                      inputBtn: {
                                          alignItems: "center",
-                                         marginTop: height/15-35
+                                         marginTop: hp('2%')
                                      },
                                      dateBox: {
-                                         width: width - 40,
+                                         width: wp('80%'),
                                          justifyContent: "space-between",
                                          flexDirection: "row",
                                      },
                                      date: {
-                                         height: height/12-5,
-                                         width: width/5 ,
-                                         marginHorizontal: width/30,
+                                         height: hp('7.5%'),
+                                         width: wp('20%'),
                                          borderWidth: 1,
                                          borderRadius: 10,
                                          borderColor: "#BBBBBB",
@@ -206,21 +206,21 @@ const styles = StyleSheet.create({
                                          justifyContent: "center"
                                      },
                                      dateMos: {
-                                         width: width/5+30
+                                         width: wp('26%')
                                      },
                                      titleDate: {
                                          fontSize: 14,
                                          color: '#9E9E9E'
                                      },
                                      itemBox: {
-                                         marginTop: height/15-25,
+                                         marginTop: hp('3%'),
                                          alignItems: "center",
                                          justifyContent: "center"
                                      },
                                      input: {
-                                         height: height/12-5,
-                                         width: width/5+30,
-                                         marginTop: height/15-35,
+                                         height: hp('7.5%'),
+                                         width: wp('26%'),
+                                         marginTop: hp('2%'),
                                          borderWidth: 1,
                                          fontSize: 14,
                                          borderRadius: 10,
@@ -230,18 +230,18 @@ const styles = StyleSheet.create({
                                          marginHorizontal: 12,
                                      },
                                      photoBox: {
-                                         marginVertical: height/15-30,
-                                         width: width/3+30,
-                                         height: width/3+30,
-                                         borderRadius: width/3+30,
+                                         marginVertical: hp('2%'),
+                                         width: wp('42%'),
+                                         height: wp('42%'),
+                                         borderRadius: wp('42%'),
                                          backgroundColor: '#F5F5F5',
                                          alignItems: "center",
                                          justifyContent: "center"
                                      },
                                      photo: {
-                                         width: width/3+30,
-                                         height: width/3+30,
-                                         borderRadius: width/3+30,
+                                         width: wp('42%'),
+                                         height: wp('42%'),
+                                         borderRadius: wp('42%'),
                                      },
                                      photoBtn: {
                                          position: "absolute",
@@ -258,12 +258,12 @@ const styles = StyleSheet.create({
                                          alignItems: "center"
                                      },
                                      button: {
-                                         width: width/2+30,
+                                         width: wp('55%'),
                                          alignItems: "center",
                                          backgroundColor: "#585CCF",
                                          padding: 15,
                                          borderRadius: 10,
-                                         marginHorizontal: 10
+                                         marginVertical: hp('2%')
                                      },
                                      titleBti: {
                                          color: '#ffffff',

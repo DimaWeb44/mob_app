@@ -4,6 +4,7 @@ import {useAppSelector} from "../../bll/hooks";
 import moment from "moment";
 import {monthNames} from "../first-screen";
 import {MaterialIcons} from "@expo/vector-icons";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export const HomeScreen = () => {
     const firstData = useAppSelector(state => state.firstData.firstData)
@@ -25,7 +26,7 @@ export const HomeScreen = () => {
      const monday = week[moment(firstData.date).day()-1][0]*/
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Text style={{fontSize: 20}}>Ваш малыш родился</Text>
             <Text
                 style={{fontSize: 20}}>{date.getDate()} {monthNames[date.getMonth()]} {date.getFullYear()} в {time.getHours()}:{time.getMinutes()}</Text>
@@ -41,7 +42,7 @@ export const HomeScreen = () => {
                     : <MaterialIcons name="child-care" size={90} color="#C0C0C0"/>}
             </View>
 
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -56,6 +57,9 @@ const styles = StyleSheet.create({
                                          width: 270,
                                          height: 270,
                                          borderRadius: 270,
+                                         justifyContent: "center",
+                                         alignItems: "center",
+                                         backgroundColor: '#F5F5F5',
                                      },
                                      photo: {
                                          width: 270,

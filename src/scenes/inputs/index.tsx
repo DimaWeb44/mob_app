@@ -78,7 +78,7 @@ export const InputsScreen = () => {
             }
         >
             {({handleChange, setFieldValue, handleSubmit, values}) => (
-                <SafeAreaView style={styles.container}>
+                <View style={styles.container}>
                     <View style={styles.photoBox}>
                         {values.photo
                             ? <Image style={styles.photo} source={{uri: `${values.photo}`}}/>
@@ -138,7 +138,7 @@ export const InputsScreen = () => {
                             <Text style={styles.titleBti}>СОХРАНИТЬ</Text>
                         </TouchableOpacity>
                     </View>
-                </SafeAreaView>
+                </View>
             )}
         </Formik>
     )

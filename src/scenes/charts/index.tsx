@@ -20,7 +20,7 @@ export const ChartsScreen = ({}) => {
     const ageArr = dataSort ? dataSort.map((item: any) => `${item.age} мес`) : [1]
     const bmiArr = dataSort ? dataSort.map((item: any) => Math.round(+item.weight / (+item.height / 100))) : [1]
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.chartBox}>
                 <Text style={styles.title}>ИМТ</Text>
                 <ChartLine ageArr={ageArr} bmiArr={bmiArr}/>
@@ -29,7 +29,7 @@ export const ChartsScreen = ({}) => {
                 <Text style={styles.title}>Рост</Text>
                 <ChartBar ageArr={ageArr} heightArr={heightArr}/>
             </View>
-        </SafeAreaView>
+        </View>
     )
 }
 

@@ -100,7 +100,7 @@ export const GalleryScreen = () => {
     );
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             {dataSort
                 ? <FlatList
                     data={dataSort}
@@ -108,7 +108,7 @@ export const GalleryScreen = () => {
                     keyExtractor={item => item.id}
                 />
                 : <Text style={styles.title}>Нет данных</Text>}
-        </SafeAreaView>
+        </View>
     )
 }
 
