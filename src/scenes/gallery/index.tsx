@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {width} from "../inputs";
 import {useAppDispatch, useAppSelector} from "../../bll/hooks";
 import {AntDesign, Entypo, MaterialIcons} from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import {changeItem, deleteItemTC} from "../../bll/appReducer";
 import {useNavigation} from "@react-navigation/native";
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const Item = ({item}: any) => {
     const navigation = useNavigation()
@@ -96,7 +97,9 @@ export const GalleryScreen = () => {
     });
 
     const renderItem = ({item}: any) => (
-        <Item item={item}/>
+        <View style={styles.containerItem}>
+            <Item item={item}/>
+        </View>
     );
 
     return (
@@ -121,32 +124,37 @@ const styles = StyleSheet.create({
                                          position: "relative",
                                          width: width,
                                      },
+                                     containerItem:{
+                                         width: wp('100%'),
+                                         alignItems: "center",
+                                         justifyContent: "center"
+                                     },
                                      item: {
-                                         width: width - 30,
-                                         marginVertical: 15,
+                                         width: wp('95%'),
+                                         marginTop: hp('2%'),
                                          flexDirection: "row",
                                      },
                                      photoBox: {
-                                         width: 140,
-                                         height: 140,
-                                         borderRadius: 140,
+                                         width: wp('35%'),
+                                         height: wp('35%'),
+                                         borderRadius: wp('35%'),
                                          backgroundColor: '#F5F5F5',
                                          alignItems: "center",
                                          justifyContent: "center"
                                      },
                                      photo: {
-                                         width: 140,
-                                         height: 140,
-                                         borderRadius: 140
+                                         width: wp('35%'),
+                                         height: wp('35%'),
+                                         borderRadius: wp('35%')
                                      },
                                      textContainer: {
-                                         marginLeft: 30,
+                                         marginLeft: wp('10%'),
                                          justifyContent: "center",
                                          flexDirection: "row",
                                          alignItems: "center",
                                      },
                                      textBox: {
-                                         marginRight: 30,
+                                         marginRight: wp('7%'),
                                      },
                                      dots: {
                                          position: "absolute",
@@ -158,18 +166,18 @@ const styles = StyleSheet.create({
                                          fontSize: 14,
                                          lineHeight: 16,
                                          color: '#968286',
-                                         marginVertical: 5,
+                                         marginVertical: hp('0.7%'),
                                      },
                                      values: {
                                          fontWeight: '400',
                                          fontSize: 14,
                                          lineHeight: 16,
-                                         marginVertical: 5,
+                                         marginVertical: hp('0.7%'),
                                          color: '#000000',
                                      },
                                      modalPhoto: {
-                                         width: width - 20,
-                                         height: width,
+                                         width: wp('95%'),
+                                         height: wp('95%'),
                                          borderRadius: 25,
                                          borderWidth: 1,
                                          borderColor: "#000",
@@ -189,20 +197,20 @@ const styles = StyleSheet.create({
                                      modalDelRef: {
                                          alignItems: 'center',
                                          justifyContent: 'center',
-                                         width: width - 40,
+                                         width: wp('90%'),
                                          backgroundColor: '#fff',
-                                         height: width / 2,
+                                         height: hp('20%'),
                                          borderRadius: 25
                                      },
                                      modalBtn: {
                                          backgroundColor: "#585CCF",
                                          borderRadius: 10,
                                          marginHorizontal: 10,
-                                         marginTop: 30
+                                         marginTop: hp('3%')
                                      },
                                      btnTitle: {
                                          color: '#fff',
-                                         margin: 10
+                                         margin: wp('2.5%')
                                      },
                                      modalBox: {
                                          flexDirection: "row"

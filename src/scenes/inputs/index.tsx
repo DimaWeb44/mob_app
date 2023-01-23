@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-    Alert,
-    Dimensions,
-    Image,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import {Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import uuid from 'react-native-uuid';
 import {Formik} from 'formik';
@@ -17,6 +7,7 @@ import {useAppDispatch, useAppSelector} from "../../bll/hooks";
 import * as ImagePicker from "expo-image-picker";
 import {changeItem, changeItemTC, setItemTC} from "../../bll/appReducer";
 import {useNavigation} from "@react-navigation/native";
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const width = Dimensions.get('window').width
 export const height = Dimensions.get('window').height
@@ -47,7 +38,7 @@ export const InputsScreen = () => {
     React.useEffect(() => {
         return navigation.addListener('blur', () => {
             if (item) {
-                dispatch(changeItem(null ))
+                dispatch(changeItem(null))
             }
         });
     }, [item]);
@@ -88,7 +79,7 @@ export const InputsScreen = () => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.inputsBox}>
-                        <View style={styles.itemBox}>
+                        <View>
                             <Text style={styles.title}>Возраст</Text>
                             <TextInput
                                 style={styles.input}
@@ -98,7 +89,7 @@ export const InputsScreen = () => {
                                 keyboardType="numeric"
                             />
                         </View>
-                        <View style={styles.itemBox}>
+                        <View>
                             <Text style={styles.title}>Вес</Text>
                             <TextInput
                                 style={styles.input}
@@ -108,7 +99,7 @@ export const InputsScreen = () => {
                                 keyboardType="numeric"
                             />
                         </View>
-                        <View style={styles.itemBox}>
+                        <View>
                             <Text style={styles.title}>Рост</Text>
                             <TextInput
                                 style={styles.input}
@@ -152,18 +143,18 @@ const styles = StyleSheet.create({
                                          justifyContent: 'center',
                                      },
                                      photoBox: {
-                                         marginVertical: 20,
-                                         width: 240,
-                                         height: 240,
-                                         borderRadius: 240,
+                                         marginVertical: hp('3%'),
+                                         width: wp('60%'),
+                                         height: wp('60%'),
+                                         borderRadius: wp('60%'),
                                          alignItems: "center",
                                          justifyContent: "center",
                                          backgroundColor: '#F5F5F5',
                                      },
                                      photo: {
-                                         width: 240,
-                                         height: 240,
-                                         borderRadius: 240,
+                                         width: wp('60%'),
+                                         height: wp('60%'),
+                                         borderRadius: wp('60%'),
                                      },
                                      photoBtn: {
                                          position: "absolute",
@@ -177,24 +168,22 @@ const styles = StyleSheet.create({
                                          right: 17
                                      },
                                      inputsBox: {
-                                         width: width - 40,
+                                         width: wp('90%'),
                                          justifyContent: "space-between",
                                          flexDirection: "row",
-                                         marginBottom: 20
+                                         marginBottom: hp('4%')
                                      },
-                                     itemBox: {},
                                      title: {
                                          color: "#000000FF",
                                          fontSize: 12,
                                          lineHeight: 16,
                                          fontWeight: "400",
                                          textAlign: "center",
-                                         marginBottom: 10
+                                         marginBottom: hp('2%')
                                      },
                                      input: {
-                                         height: 60,
-                                         width: 80,
-                                         margin: 12,
+                                         height: hp('7.5%'),
+                                         width: wp('24%'),
                                          borderWidth: 1,
                                          fontSize: 14,
                                          borderRadius: 10,
@@ -203,9 +192,9 @@ const styles = StyleSheet.create({
                                          color: '#9E9E9E'
                                      },
                                      bmi: {
-                                         width: 162,
-                                         height: 162,
-                                         borderRadius: 162,
+                                         width: wp('42%'),
+                                         height: wp('42%'),
+                                         borderRadius: wp('42%'),
                                          borderWidth: 5,
                                          borderColor: "#79CD5B",
                                          alignItems: "center",
@@ -216,25 +205,25 @@ const styles = StyleSheet.create({
                                          fontSize: 20,
                                          lineHeight: 27,
                                          color: '#A5A5A5',
-                                         marginBottom: 10
+                                         marginBottom: hp('1.5%')
                                      },
                                      numberBmi: {
                                          fontWeight: '400',
-                                         fontSize: 80,
-                                         lineHeight: 80,
+                                         fontSize: hp('10%'),
+                                         lineHeight: hp('10%'),
                                          color: '#79CD5B',
                                      },
                                      buttonBox: {
                                          flex: 1,
                                      },
                                      button: {
-                                         width: 240,
+                                         width: wp('58%'),
                                          marginTop: 20,
                                          alignItems: "center",
                                          backgroundColor: "#585CCF",
                                          padding: 15,
                                          borderRadius: 10,
-                                         marginHorizontal: 10
+                                         marginVertical: hp('2%')
                                      },
                                      titleBti: {
                                          color: '#ffffff',

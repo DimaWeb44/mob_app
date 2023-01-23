@@ -1,9 +1,9 @@
-import {View} from "react-native";
+import {ScrollView} from "react-native";
 import {BarChart} from "react-native-chart-kit";
-import {width} from "../scenes/inputs";
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const ChartBar = ({heightArr, ageArr}: any) => {
-    return (<View style={{width: width}}>
+    return (<ScrollView horizontal={true} style={{width: wp(`${95}%`)}}>
             <BarChart
                 data={{
                     labels: ageArr,
@@ -14,8 +14,8 @@ export const ChartBar = ({heightArr, ageArr}: any) => {
                         }
                     ]
                 }}
-                width={width - 40} // from react-native
-                height={230}
+                width={wp(`${95 + ageArr.length * 5}%`)} // from react-native
+                height={hp(`33%`)}
                 yAxisLabel={''}
                 yAxisSuffix={''}
                 showValuesOnTopOfBars={true}
@@ -37,6 +37,6 @@ export const ChartBar = ({heightArr, ageArr}: any) => {
                     marginVertical: 10,
                 }}
             />
-        </View>
+        </ScrollView>
     )
 }

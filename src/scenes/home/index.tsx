@@ -1,10 +1,10 @@
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {useAppSelector} from "../../bll/hooks";
 import moment from "moment";
 import {monthNames} from "../first-screen";
 import {MaterialIcons} from "@expo/vector-icons";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const HomeScreen = () => {
     const firstData = useAppSelector(state => state.firstData.firstData)
@@ -41,7 +41,6 @@ export const HomeScreen = () => {
                              source={{uri: `${data && data.length > 1 && data[0].photo ? data[0].photo : firstData.photo}`}}/>
                     : <MaterialIcons name="child-care" size={90} color="#C0C0C0"/>}
             </View>
-
         </View>
     )
 }
@@ -54,20 +53,20 @@ const styles = StyleSheet.create({
                                          justifyContent: 'center',
                                      },
                                      photoBox: {
-                                         width: 270,
-                                         height: 270,
-                                         borderRadius: 270,
+                                         width: wp('70%'),
+                                         height: wp('70%'),
+                                         borderRadius: wp('70%'),
                                          justifyContent: "center",
                                          alignItems: "center",
                                          backgroundColor: '#F5F5F5',
                                      },
                                      photo: {
-                                         width: 270,
-                                         height: 270,
-                                         borderRadius: 270,
+                                         width: wp('70%'),
+                                         height: wp('70%'),
+                                         borderRadius: wp('70%'),
                                      },
                                      title: {
                                          fontSize: 20,
-                                         marginBottom: 15
+                                         marginBottom: hp('3%')
                                      }
                                  });

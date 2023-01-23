@@ -1,6 +1,6 @@
-import {Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from "react";
-import {height, width} from "../inputs";
+import {width} from "../inputs";
 import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 import {MaterialIcons} from "@expo/vector-icons";
 import {Formik} from 'formik';
@@ -9,7 +9,7 @@ import {setFirstDataTC} from "../../bll/firstScreenReducer";
 import * as ImagePicker from "expo-image-picker";
 import {setItemTC} from "../../bll/appReducer";
 import uuid from "react-native-uuid";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const monthNames = [
     "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
@@ -19,7 +19,7 @@ export const monthNames = [
 export const FirstScreen = ({}) => {
     const dispatch = useAppDispatch()
     const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState( new Date());
+    const [time, setTime] = useState(new Date());
 
     const showDatepicker = () => {
         DateTimePickerAndroid.open({
@@ -79,6 +79,7 @@ export const FirstScreen = ({}) => {
         >
             {({handleChange, setFieldValue, handleSubmit, values}) => (
                 <View style={styles.container}>
+                    <StatusBar barStyle={"dark-content"} backgroundColor={'#FCE0E5'}/>
                     <View style={styles.topBox}/>
                     <View style={styles.bottomBox}/>
                     <View style={styles.content}>
@@ -156,6 +157,8 @@ export const FirstScreen = ({}) => {
 const styles = StyleSheet.create({
                                      container: {
                                          flex: 1,
+                                         height: '100%',
+                                         width: '100%',
                                          backgroundColor: '#FFFFFF',
                                          alignItems: 'center',
                                          justifyContent: 'center',
@@ -258,12 +261,12 @@ const styles = StyleSheet.create({
                                          alignItems: "center"
                                      },
                                      button: {
-                                         width: wp('55%'),
+                                         width: wp('58%'),
                                          alignItems: "center",
                                          backgroundColor: "#585CCF",
                                          padding: 15,
                                          borderRadius: 10,
-                                         marginVertical: hp('2%')
+                                         marginVertical: hp('1%')
                                      },
                                      titleBti: {
                                          color: '#ffffff',

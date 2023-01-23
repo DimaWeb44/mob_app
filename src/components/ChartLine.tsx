@@ -1,9 +1,9 @@
-import {View} from "react-native";
+import {ScrollView} from "react-native";
 import {LineChart,} from "react-native-chart-kit";
-import {width} from "../scenes/inputs";
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const ChartLine = ({ageArr, bmiArr}: any) => {
-    return (<View style={{width: width, alignItems: "center"}}>
+    return (<ScrollView horizontal={true} style={{width: wp(`${95}%`)}}>
             <LineChart
                 data={{
                     labels: ageArr,
@@ -14,8 +14,8 @@ export const ChartLine = ({ageArr, bmiArr}: any) => {
                         }
                     ]
                 }}
-                width={width} // from react-native
-                height={230}
+                width={wp(`${95 + ageArr.length * 5}%`)} // from react-native
+                height={hp(`33%`)}
                 withInnerLines={false}
                 withOuterLines={false}
                 yAxisInterval={1} // optional, defaults to 1
@@ -46,6 +46,6 @@ export const ChartLine = ({ageArr, bmiArr}: any) => {
                     borderRadius: 16
                 }}
             />
-        </View>
+        </ScrollView>
     )
 }

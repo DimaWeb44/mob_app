@@ -1,6 +1,7 @@
-import {TouchableOpacity, View} from "react-native";
+import {StatusBar, TouchableOpacity, View} from "react-native";
 import {AntDesign} from '@expo/vector-icons';
 import {width} from "../scenes/inputs";
+import React from "react";
 
 export const TabBar = ({state, navigation}: any) => {
 
@@ -15,6 +16,7 @@ export const TabBar = ({state, navigation}: any) => {
             borderTopRightRadius: 50,
             borderTopLeftRadius: 50
         }}>
+            <StatusBar barStyle={"dark-content"} backgroundColor={'#FCE0E5'}/>
             {state.routes.map((route: any, index: any) => {
                 const label = route.name
                 const isFocused = state.index === index
