@@ -28,6 +28,7 @@ export const setAppData = (data: any) => ({type: 'APP/SET-DATA', data} as const)
 export const setItem = (item: any) => ({type: 'APP/SET-ITEM', item} as const)
 export const toggleLoading = () => ({type: 'APP/TOGGLE-LOADING'} as const)
 export const changeItem = (item: any) => ({type: 'APP/CHANGE-ITEM', item} as const)
+
 // thunks
 export const initializeAppTC = (): AppThunkType => (dispatch: AppDispatchType) => {
     dispatch(toggleLoading())

@@ -1,7 +1,5 @@
 import {setData} from '../api/api'
 import {AppActionsType, AppDispatchType, AppThunkType} from "./store";
-import {setItemTC} from "./appReducer";
-import uuid from "react-native-uuid";
 
 const initialState: InitialStateType = {
     firstData: null,
@@ -18,6 +16,7 @@ export const firstScreenReducer = (state: InitialStateType = initialState, actio
 
 // actions
 export const setFirstData = (firstData: any) => ({type: 'FIRST/SET-FIRST-DATA', firstData} as const)
+
 // thunks
 export const setFirstDataTC = (firstData: any): AppThunkType => (dispatch: AppDispatchType) => {
     setData(firstData, 'firstData')

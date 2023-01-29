@@ -7,7 +7,6 @@ import {HomeScreen} from "../scenes/home";
 import {TabBar} from "./TabBar";
 import {TouchableOpacity} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
-import React from "react";
 
 const Tab = createBottomTabNavigator();
 

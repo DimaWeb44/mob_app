@@ -1,11 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {ChartLine} from "../../components/ChartLine";
-import React from "react";
 import {useAppSelector} from "../../bll/hooks";
 import {ChartBar} from "../../components/BarChart";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-export const ChartsScreen = ({}) => {
+export const ChartsScreen = () => {
     const data = useAppSelector(state => state.app.data)
     const dataSort = data && data.sort(function (a: any, b: any) {
         if (+a.age > +b.age) {

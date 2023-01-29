@@ -16,7 +16,7 @@ export const monthNames = [
     "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
 ]
 
-export const FirstScreen = ({}) => {
+export const FirstScreen = () => {
     const dispatch = useAppDispatch()
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
